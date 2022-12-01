@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BattleService } from '../../services/battleService/battle.service';
+
 
 @Component({
   selector: 'app-battle',
@@ -6,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BattleComponent implements OnInit {
 
-  constructor() { }
+  constructor(public battleService: BattleService) {
+  }
 
   ngOnInit(): void {
+    this.battleService.reloadBattle();
+
+    this.battleService.battle$.subscribe(battle => console.log('battle', battle))
   }
 
 }

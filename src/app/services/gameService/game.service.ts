@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
 
 export class GameService {
 
-  private _resetScore = [0, 0];
+  private _resetScore = [ 0, 0 ];
   private _resetRound = 0;
 
   private readonly _score = new BehaviorSubject<number[]>(this._resetScore);
@@ -29,7 +30,6 @@ export class GameService {
   }
 
   get scorePLayerTwo(): number {
-
     return this._score.getValue()[1];
   }
 

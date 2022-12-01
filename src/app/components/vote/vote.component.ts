@@ -1,14 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { GameService } from '../../services/gameService/game.service';
+
 
 @Component({
   selector: 'app-vote',
   templateUrl: './vote.component.html',
 })
-export class VoteComponent implements OnInit {
+export class VoteComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(public gameService: GameService) {
   }
+
+  addPoints(player: number): void {
+    this.gameService.addPointFor(player);
+  }
+
 
 }
