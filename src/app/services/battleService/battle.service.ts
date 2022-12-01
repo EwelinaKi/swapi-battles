@@ -1,7 +1,8 @@
 import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from '../apiService/api.service';
-import { BattleType, EBattle, IBattle, IBattleAttributes, } from '../models/battle.model';
+import { EBattle, IBattle } from '../models/battle.model';
+import { RandomService } from '../random/random.service';
 
 
 @Injectable({
@@ -10,20 +11,16 @@ import { BattleType, EBattle, IBattle, IBattleAttributes, } from '../models/batt
 
 export class BattleService implements OnInit {
 
-  private readonly _battle = new BehaviorSubject<Array<IBattle<IBattleAttributes>> | null>(null);
-  private readonly _battleType = new BehaviorSubject<BattleType>(EBattle.RANDOM);
+  private readonly _battle = new BehaviorSubject<Array<IBattle> | null>(null);
+  private readonly _battleType = new BehaviorSubject<EBattle>(this.randomService.getRandomBattleType());
 
   readonly battle$ = this._battle.asObservable();
-  readonly battleType$ = this._battle.asObservable();
+  readonly battleType$ = this._battleType.asObservable();
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private randomService: RandomService) {
   }
 
-  set battleType(type: BattleType) {
-    this._battleType.next(type);
-  }
-
-  get battleType(): BattleType {
+  get battleType(): EBattle {
     return this._battleType.getValue();
   }
 
@@ -34,7 +31,16 @@ export class BattleService implements OnInit {
   reloadBattle(): void {
     this.apiService.getNewBattle(this.battleType)
       .subscribe(
-        resp => this._battle.next(resp)
+        resp => {
+          this._battle.next(resp)
+        },
+        (err) => {
+          if (err.status = 404) {
+            this.reloadBattle();
+          } else {
+            console.log(err);
+          }
+        }
       );
   }
 

@@ -19,6 +19,7 @@ import { BattleComponent } from './components/battle/battle.component';
 import { VoteComponent } from './components/vote/vote.component';
 import { HeaderComponent } from './components/header/header.component';
 import { RevealComponent } from './components/reveal/reveal.component';
+import { KeysPipe } from './pipes/keys.pipe';
 
 
 @NgModule({
@@ -30,6 +31,8 @@ import { RevealComponent } from './components/reveal/reveal.component';
     VoteComponent,
     HeaderComponent,
     RevealComponent,
+    KeysPipe,
+    KeysPipe,
   ],
   imports: [
     HttpClientModule,

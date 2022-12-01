@@ -7,48 +7,33 @@ export enum EBattle {
   RANDOM = 'random'
 }
 
-export type IBattleAttributes = IPeopleAttributes | IPlanetAttributes | IStarshipAttributes;
-
-export interface IBattle<T> {
+export interface IBattle extends IIncomparableAttr, IComparableAttr {
   type: BattleType,
   name: string,
-  attributes: T,
 }
 
-export interface IPeopleAttributes {
-  incomparable: {
-    gender: string,
-    birth: string,
-  },
-  comparable: {
-    mass: number,
-    height: number,
-  }
+export interface IIncomparableAttr {
+  model?: string,
+  manufacturer?: string,
+  climate?: string,
+  terrain?: string,
+  gravity?: string
+  gender?: string,
+  birth?: string,
 }
 
-export interface IPlanetAttributes {
-  incomparable: {
-    climate: string,
-    terrain: string,
-    gravity: string
-  },
-  comparable: {
-    diameter: number,
-    rotationPeriod: number,
-    orbitalPeriod: number,
-    population: number,
-  }
+export interface IComparableAttr {
+  diameter?: number,
+  rotationPeriod?: number,
+  orbitalPeriod?: number,
+  population?: number,
+  cost?: number,
+  length?: number,
+  passengers?: number,
+  crew?: number,
+  mass?: number,
+  height?: number,
 }
 
-export interface IStarshipAttributes {
-  incomparable: {
-    model: string,
-    manufacturer: string,
-  },
-  comparable: {
-    cost: number,
-    length: number,
-    passengers: number,
-    crew: number,
-  }
-}
+export type IComparable = keyof IComparableAttr;
+export type IIncomparable = keyof IIncomparableAttr;

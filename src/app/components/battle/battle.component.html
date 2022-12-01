@@ -1,1 +1,20 @@
-<p>battle works!</p>
+<div *ngFor="let battle of battleService.battle$ | async; index as i">
+  <h1>{{battle.name}}</h1>
+
+
+  <ng-container *ngFor="let attribute of incomparableAttributes$ | async">
+    <p>
+      {{labels[attribute]}}: {{battle[attribute]}}
+
+    </p>
+  </ng-container>
+
+
+  <ng-container *ngFor="let attribute of comparableAttributes$ | async ">
+    <p>{{labels[attribute]}}: {{battle[attribute]}}</p>
+  </ng-container>
+
+
+  <p>----------------</p>
+
+</div>
