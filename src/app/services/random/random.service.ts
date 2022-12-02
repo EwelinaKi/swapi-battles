@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BattleType, EBattle } from "../models/battle.model";
+import { BattleType, EBattle, IBattleAttributes } from "../models/battle.model";
 
 
 @Injectable({
@@ -34,5 +34,10 @@ export class RandomService {
     }
 
     return [ random1, random2 ];
+  }
+
+  getRandomAttribute(attributes: IBattleAttributes[]): IBattleAttributes {
+    const index = this.getRandomNumberFromRange([ 0, attributes.length - 1 ]);
+    return attributes[index];
   }
 }

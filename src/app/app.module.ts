@@ -20,6 +20,8 @@ import { VoteComponent } from './components/vote/vote.component';
 import { HeaderComponent } from './components/header/header.component';
 import { RevealComponent } from './components/reveal/reveal.component';
 import { KeysPipe } from './pipes/keys.pipe';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -41,6 +43,8 @@ import { KeysPipe } from './pipes/keys.pipe';
     MatGridListModule,
     MatToolbarModule,
     MatCardModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     ApiService,

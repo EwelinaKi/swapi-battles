@@ -12,7 +12,9 @@ import { IPeopleDto, IPlanetsDto, IStarshipsDto } from '../models/dto.model';
 })
 export class ApiService {
 
-  private readonly SWAPI = 'https://swapi.dev/api';
+  // private readonly SWAPI = 'https://swapi.dev/api';
+  // private readonly SWAPI = 'https://www.swapi.tech/api/';
+  private readonly SWAPI = 'https://swapi.py4e.com/api/';
   private readonly PEOPLE_URL = `${this.SWAPI}/people/`;
   private readonly PLANETS_URL = `${this.SWAPI}/planets/`;
   private readonly STARSHIPS_URL = `${this.SWAPI}/starships/`;
@@ -20,6 +22,7 @@ export class ApiService {
   private readonly PEOPLE_RANGE = [ 1, 84 ];
   private readonly PLANETS_RANGE = [ 1, 60 ];
   private readonly STARSHIPS_RANGE = [ 1, 15 ];
+
 
   constructor(
     private http: HttpClient,

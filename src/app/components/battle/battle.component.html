@@ -1,20 +1,21 @@
-<div *ngFor="let battle of battleService.battle$ | async; index as i">
-  <h1>{{battle.name}}</h1>
+<ng-container *ngIf="battleService.battle$ | async as battles else loader">
 
+  <div *ngFor="let battle of battles; index as i">
+    <h1>{{battle.name}}</h1>
+    <p *ngFor="let attribute of battleService.battleData$ | async">{{labels[attribute]}}: {{battle[attribute]}}</p>
+    <mat-button-toggle-group *ngIf="i===0" name="questionAttribute" aria-label="Attribute" vertical="true">
+      <mat-button-toggle
+        *ngFor="let attribute of battleService.battleAttributes$ | async"
+        (click)="updateQuestion(attribute)"
+        checked="{{battleService.questionAttribute === attribute}}"
+        value="{{labels[attribute]}}">{{labels[attribute]}}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
 
-  <ng-container *ngFor="let attribute of incomparableAttributes$ | async">
-    <p>
-      {{labels[attribute]}}: {{battle[attribute]}}
+</ng-container>
 
-    </p>
-  </ng-container>
+<ng-template #loader>
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</ng-template>
 
-
-  <ng-container *ngFor="let attribute of comparableAttributes$ | async ">
-    <p>{{labels[attribute]}}: {{battle[attribute]}}</p>
-  </ng-container>
-
-
-  <p>----------------</p>
-
-</div>

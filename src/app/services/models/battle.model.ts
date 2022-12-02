@@ -7,12 +7,12 @@ export enum EBattle {
   RANDOM = 'random'
 }
 
-export interface IBattle extends IIncomparableAttr, IComparableAttr {
+export interface IBattle extends IData, IAttributes {
   type: BattleType,
   name: string,
 }
 
-export interface IIncomparableAttr {
+interface IData {
   model?: string,
   manufacturer?: string,
   climate?: string,
@@ -22,7 +22,7 @@ export interface IIncomparableAttr {
   birth?: string,
 }
 
-export interface IComparableAttr {
+interface IAttributes {
   diameter?: number,
   rotationPeriod?: number,
   orbitalPeriod?: number,
@@ -35,5 +35,5 @@ export interface IComparableAttr {
   height?: number,
 }
 
-export type IComparable = keyof IComparableAttr;
-export type IIncomparable = keyof IIncomparableAttr;
+export type IBattleAttributes = keyof IAttributes;
+export type IBattleData = keyof IData;
