@@ -1,2 +1,30 @@
-<button mat-raised-button color="primary" (click)="addPoints(0)">Player1</button>
-<button mat-raised-button color="warn" (click)="addPoints(1)">Player2</button>
+<ng-container *ngIf="battleService.battle$ | async as battle; else loader">
+
+  <mat-button-toggle-group name="playerOneVote" aria-label="First player vote">
+    <mat-button-toggle
+      (click)="gameService.vote(0,0)"
+      value="{{0}}">LEFT
+    </mat-button-toggle>
+    <mat-button-toggle
+      (click)="gameService.vote(0,1)"
+      value="{{1}}">RIGHT
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group name="playerTwoVote" aria-label="Second player vote">
+    <mat-button-toggle
+      (click)="gameService.vote(1,0)"
+      value="{{0}}">LEFT
+    </mat-button-toggle>
+    <mat-button-toggle
+      (click)="gameService.vote(1,1)"
+      value="{{1}}">RIGHT
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+</ng-container>
+
+
+<ng-template #loader>
+  <p>WAITING FOR NEW BATTLE....</p>
+</ng-template>
