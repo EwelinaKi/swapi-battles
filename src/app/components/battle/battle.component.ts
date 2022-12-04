@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BattleService } from '../../services/battleService/battle.service';
 import { IBattleAttributes } from '../../services/models/battle.model';
+import { GameService } from '../../services/gameService/game.service';
 
 
 @Component({
@@ -28,7 +29,10 @@ export class BattleComponent implements OnInit {
     length: "Length",
   }
 
-  constructor(public battleService: BattleService) {
+  constructor(
+    public battleService: BattleService,
+    public gameService: GameService
+  ) {
   }
 
   ngOnInit(): void {

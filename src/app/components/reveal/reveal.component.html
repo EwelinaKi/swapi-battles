@@ -1,1 +1,30 @@
-<p>reveal works!</p>
+<ng-container *ngIf="!(gameService.isGameEnded$ | async); else newGameTmpl">
+
+
+  <ng-container *ngIf="summary$ | async; else revealTmpl">
+    <p>round summary</p>
+    <button mat-raised-button color="primary"
+            (click)="nextRound()">Next Round
+    </button>
+  </ng-container>
+
+
+</ng-container>
+<ng-template #revealTmpl>
+  <p *ngIf="waitForVotes$ | async">Waiting for votes</p>
+  <button mat-raised-button color="primary"
+
+          (click)="reveal()">Reveal
+  </button>
+</ng-template>
+
+
+<ng-template #newGameTmpl>
+  <div>
+    <button
+      mat-raised-button color="primary"
+      (click)="reset()"
+    >Start new Game
+    </button>
+  </div>
+</ng-template>

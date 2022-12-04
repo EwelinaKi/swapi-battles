@@ -43,6 +43,10 @@ export class BattleService {
     return this._battleType.getValue();
   }
 
+  get battle(): IBattle[] | null {
+    return this._battle.getValue();
+  }
+
   get battleAttributes(): IBattleAttributes[] {
     return this._battleAttributes.getValue();
   }
@@ -56,6 +60,7 @@ export class BattleService {
   }
 
   reloadBattle(): void {
+    this._battle.next(null);
     switch (this.battleType) {
       case EBattle.PEOPLE:
         this._battleAttributes.next(this._peopleAttributes);

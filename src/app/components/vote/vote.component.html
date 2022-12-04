@@ -3,10 +3,12 @@
   <mat-button-toggle-group name="playerOneVote" aria-label="First player vote">
     <mat-button-toggle
       (click)="gameService.vote(0,0)"
+      disabled="{{gameService.roundFreeze$ | async}}"
       value="{{0}}">LEFT
     </mat-button-toggle>
     <mat-button-toggle
       (click)="gameService.vote(0,1)"
+      disabled="{{gameService.roundFreeze$ | async}}"
       value="{{1}}">RIGHT
     </mat-button-toggle>
   </mat-button-toggle-group>
@@ -14,10 +16,12 @@
   <mat-button-toggle-group name="playerTwoVote" aria-label="Second player vote">
     <mat-button-toggle
       (click)="gameService.vote(1,0)"
+      disabled="{{gameService.roundFreeze$ | async}}"
       value="{{0}}">LEFT
     </mat-button-toggle>
     <mat-button-toggle
       (click)="gameService.vote(1,1)"
+      disabled="{{gameService.roundFreeze$ | async}}"
       value="{{1}}">RIGHT
     </mat-button-toggle>
   </mat-button-toggle-group>
