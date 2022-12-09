@@ -1,0 +1,55 @@
+@import 'src/app/styles/palette.style.scss';
+
+
+.battle-container {
+  background: $accentWhite;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 15px;
+  min-width: 480px;
+  height: calc(100vh - 470px);
+}
+
+.question-buttons {
+  text-align: center;
+
+  .mat-button-toggle {
+    background: $accentLight;
+  }
+
+  .mat-button-toggle-checked {
+    background: $accentDark;
+  }
+}
+
+.battles {
+  font-size: 1.0em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-grow: 1;
+  height: calc(100% - 40px);
+  color: $mainWhite;
+}
+
+.battle {
+  margin: 10px;
+  padding: 30px;
+  border-radius: 5px;
+  flex-grow: 1;
+  width: 200px;
+  background: $accentLight;
+}
+
+.battle-title {
+  font-size: 1.4em;
+  text-align: center;
+  color: $accentDark;
+}
+
+.battle-question {
+  margin: 10px auto 0 auto;
+  text-align: center;
+  color: $mainDark;
+}

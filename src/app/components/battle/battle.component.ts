@@ -7,6 +7,7 @@ import { GameService } from '../../services/gameService/game.service';
 @Component({
   selector: 'app-battle',
   templateUrl: './battle.component.html',
+  styleUrls: [ './battle.style.scss' ],
 })
 export class BattleComponent implements OnInit {
 

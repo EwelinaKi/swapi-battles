@@ -1,0 +1,26 @@
+@import 'src/app/styles/palette.style.scss';
+
+.reveal-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  height: 100px;
+  background: $mainDark;
+  color: $mainLight;
+  width: 100vw;
+  font-size: 1.6em;
+  margin-top: 10px;
+}
+
+.mat-raised-button {
+  font-size: 1.2em;
+  width: 460px;
+  padding: 10px 15px;
+}
+
+.mat-button-disabled {
+  background: $mainLight !important;
+}

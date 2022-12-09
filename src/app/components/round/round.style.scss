@@ -1,0 +1,22 @@
+@import 'src/app/styles/palette.style.scss';
+
+.round {
+  background: $mainLight;
+  color: $mainDark;
+  width: 100vw;
+  height: 80px;
+  font-size: 1.6em;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    margin: 5px auto;
+  }
+}
+
+.round-type {
+  color: $accentDark;
+}

@@ -1,0 +1,53 @@
+@import 'src/app/styles/palette.style.scss';
+
+.votes-container, .mat-button-toggle {
+  text-align: center;
+}
+
+.votes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  flex-grow: 1;
+  width: 560px;
+}
+
+.vote-buttons {
+  width: 220px;
+}
+
+.vote-one {
+  .mat-button-toggle {
+    background: $playerOneLight;
+  }
+
+  .mat-button-toggle-checked {
+    background: $playerOneDark;
+  }
+}
+
+.vote-two {
+  .mat-button-toggle {
+    background: $playerTwoLight;
+  }
+
+  .mat-button-toggle-checked {
+    background: $playerTwoDark;
+  }
+}
+
+.vote-loader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  height: 60px;
+  background: $mainDark;
+  color: $mainLight;
+  width: 100vw;
+  font-size: 1.6em;
+  margin: auto;
+}

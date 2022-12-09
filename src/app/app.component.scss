@@ -1,0 +1,16 @@
+@import './styles/palette.style';
+
+.header {
+  background: $mainDark;
+  color: $mainLight;
+  height: 60px;
+  font-size: 2em;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}

@@ -17,11 +17,10 @@ import { ScoreComponent } from './components/score/score.component';
 import { RoundComponent } from './components/round/round.component';
 import { BattleComponent } from './components/battle/battle.component';
 import { VoteComponent } from './components/vote/vote.component';
-import { HeaderComponent } from './components/header/header.component';
 import { RevealComponent } from './components/reveal/reveal.component';
-import { KeysPipe } from './pipes/keys.pipe';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -31,10 +30,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     RoundComponent,
     BattleComponent,
     VoteComponent,
-    HeaderComponent,
     RevealComponent,
-    KeysPipe,
-    KeysPipe,
   ],
   imports: [
     HttpClientModule,
@@ -43,6 +39,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatGridListModule,
     MatToolbarModule,
     MatCardModule,
+    MatButtonModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
   ],

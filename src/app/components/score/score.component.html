@@ -1,1 +1,8 @@
-<p>{{gameService.scorePlayerOne$ | async}} <--- SCORE ---> {{gameService.scorePlayerTwo$ | async}}</p>
+<div class="score-container">
+  <div class="score">
+    <p class="score1 score-one">{{gameService.scorePlayerOne$ | async}}</p>
+    <p class="score1">SCORE</p>
+    <p class="score1 score-two">{{gameService.scorePlayerTwo$ | async}}</p>
+  </div>
+</div>
+

@@ -1,1 +1,6 @@
-<p>ROUND {{ gameService.round$ | async}}</p>
+<div class="round">
+  <ng-container *ngIf="!(gameService.isGameEnded$ | async)">
+    <p>round -{{ ((gameService.round$ | async) || 0) + 1 }}-</p>
+    <p class="round-type">{{battleService.battleType$ | async | uppercase}}</p>
+  </ng-container>
+</div>

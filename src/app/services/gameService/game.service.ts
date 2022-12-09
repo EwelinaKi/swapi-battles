@@ -14,19 +14,21 @@ export class GameService {
 
   private _resetScore = [ 0, 0 ];
   private _resetRound = 0;
+  private _gameLength = 3;
   private _resetVotes = [];
 
 
   private readonly _score = new BehaviorSubject<number[]>(this._resetScore);
   private readonly _round = new BehaviorSubject(this._resetRound);
   private readonly _playerVotes = new BehaviorSubject<number[]>(this._resetVotes);
-  private readonly _isGameEnded = new BehaviorSubject<boolean>(false);
+  private readonly _isGameEnded = new BehaviorSubject<boolean>(true);
   private readonly _correctAnswer = new BehaviorSubject<AnswerType>(null);
   private readonly _roundFreeze = new BehaviorSubject<boolean>(false);
 
   readonly playerVote$ = this._playerVotes.asObservable();
   readonly correctAnswer$ = this._correctAnswer.asObservable();
   readonly roundFreeze$ = this._roundFreeze.asObservable();
+
 
   readonly scorePlayerOne$ = this._score.asObservable()
     .pipe(
@@ -62,6 +64,10 @@ export class GameService {
 
   get correctAnswer(): AnswerType {
     return this._correctAnswer.getValue();
+  }
+
+  get gameLength() {
+    return this._gameLength;
   }
 
   constructor(private battleService: BattleService) {
@@ -104,9 +110,13 @@ export class GameService {
     this._round.next(this.round + 1);
     this._playerVotes.next(this._resetVotes);
     this.battleService.reloadBattle();
-    this._isGameEnded.next(this.round === 2);
+    this._isGameEnded.next(this.round === this.gameLength);
     this._correctAnswer.next(null);
     this._roundFreeze.next(false);
+
+    if (this._isGameEnded.getValue()) {
+      this._score.next(this._resetScore);
+    }
   }
 
   addPointFor(player: number): void {

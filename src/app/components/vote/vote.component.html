@@ -1,34 +1,42 @@
-<ng-container *ngIf="battleService.battle$ | async as battle; else loader">
+<div class="votes-container">
+  <ng-container *ngIf="!(gameService.isGameEnded$ | async); else empty">
 
-  <mat-button-toggle-group name="playerOneVote" aria-label="First player vote">
-    <mat-button-toggle
-      (click)="gameService.vote(0,0)"
-      disabled="{{gameService.roundFreeze$ | async}}"
-      value="{{0}}">LEFT
-    </mat-button-toggle>
-    <mat-button-toggle
-      (click)="gameService.vote(0,1)"
-      disabled="{{gameService.roundFreeze$ | async}}"
-      value="{{1}}">RIGHT
-    </mat-button-toggle>
-  </mat-button-toggle-group>
+    <div class="votes" *ngIf="battleService.battle$ | async as battle">
+      <div class="vote-buttons">
+        <p>Player1</p>
+        <mat-button-toggle-group name="playerOneVote" class="vote-one" aria-label="First player vote">
+          <mat-button-toggle
+            (click)="gameService.vote(0,0)"
+            disabled="{{gameService.roundFreeze$ | async}}"
+            value="{{0}}">Vote A
+          </mat-button-toggle>
+          <mat-button-toggle
+            (click)="gameService.vote(0,1)"
+            disabled="{{gameService.roundFreeze$ | async}}"
+            value="{{1}}">Vote B
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
 
-  <mat-button-toggle-group name="playerTwoVote" aria-label="Second player vote">
-    <mat-button-toggle
-      (click)="gameService.vote(1,0)"
-      disabled="{{gameService.roundFreeze$ | async}}"
-      value="{{0}}">LEFT
-    </mat-button-toggle>
-    <mat-button-toggle
-      (click)="gameService.vote(1,1)"
-      disabled="{{gameService.roundFreeze$ | async}}"
-      value="{{1}}">RIGHT
-    </mat-button-toggle>
-  </mat-button-toggle-group>
+      <div class="vote-buttons">
+        <p>Player2</p>
+        <mat-button-toggle-group name="playerTwoVote" class="vote-two" aria-label="Second player vote">
+          <mat-button-toggle
+            (click)="gameService.vote(1,0)"
+            disabled="{{gameService.roundFreeze$ | async}}"
+            value="{{0}}">Vote A
+          </mat-button-toggle>
+          <mat-button-toggle
+            (click)="gameService.vote(1,1)"
+            disabled="{{gameService.roundFreeze$ | async}}"
+            value="{{1}}">Vote B
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+  </ng-container>
+</div>
 
-</ng-container>
-
-
-<ng-template #loader>
-  <p>WAITING FOR NEW BATTLE....</p>
+<ng-template #empty>
+  <div [ngStyle]="{height: '80px'}"></div>
 </ng-template>

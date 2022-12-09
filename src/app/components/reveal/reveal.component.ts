@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-reveal',
   templateUrl: './reveal.component.html',
+  styleUrls: [ './reveal.style.scss' ],
 })
 export class RevealComponent {
 

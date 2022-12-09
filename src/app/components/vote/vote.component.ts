@@ -6,6 +6,7 @@ import { BattleService } from '../../services/battleService/battle.service';
 @Component({
   selector: 'app-vote',
   templateUrl: './vote.component.html',
+  styleUrls: [ './vote.style.scss' ],
 })
 export class VoteComponent {
 

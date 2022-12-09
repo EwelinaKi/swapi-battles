@@ -1,25 +1,41 @@
-<ng-container *ngIf="battleService.battle$ | async as battles else loader">
+<div class="battle-container">
+  <ng-container *ngIf="!(gameService.isGameEnded$ | async); else newGame">
+    <ng-container *ngIf="battleService.battle$ | async as battles else loader">
+      <div class="question-buttons">
+        <mat-button-toggle-group name="questionAttribute" aria-label="Attribute">
+          <mat-button-toggle
+            *ngFor="let attribute of battleService.battleAttributes$ | async"
+            (click)="updateQuestion(attribute)"
+            disabled="{{gameService.roundFreeze$ | async}}"
+            checked="{{battleService.questionAttribute === attribute}}"
+            value="{{labels[attribute]}}">{{labels[attribute]}}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
 
-  <div *ngFor="let battle of battles; index as i">
-    <h1>{{battle.name}}</h1>
-    <p *ngFor="let attribute of battleService.battleData$ | async">{{labels[attribute]}}: {{battle[attribute]}}</p>
-    <strong *ngIf="battleService.questionAttribute as attr">
-      {{attr}}
-      = {{(gameService.correctAnswer$ | async) !== null ? (battle[attr] === 0 ? 'unknown' : battle[attr]) : '?' }}</strong>
-    <mat-button-toggle-group *ngIf="i===0" name="questionAttribute" aria-label="Attribute" vertical="true">
-      <mat-button-toggle
-        *ngFor="let attribute of battleService.battleAttributes$ | async"
-        (click)="updateQuestion(attribute)"
-        disabled="{{gameService.roundFreeze$ | async}}"
-        checked="{{battleService.questionAttribute === attribute}}"
-        value="{{labels[attribute]}}">{{labels[attribute]}}
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-
-</ng-container>
+      <div class="battles">
+        <ng-template ngFor let-battle let-i="index" [ngForOf]="battles">
+          <div class="battle">
+            <p class="battle-title">{{!i ? "A" : "B"}}</p>
+            <p class="battle-title">{{battle.name}}</p>
+            <p class="battle-question"
+               *ngIf="battleService.questionAttribute as attr">
+              {{attr}}
+              = {{(gameService.correctAnswer$ | async) !== null ? (battle[attr] === 0 ? 'unknown' : battle[attr]) : '?' }}</p>
+          </div>
+        </ng-template>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
 
 <ng-template #loader>
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  <mat-progress-spinner mode="indeterminate" color="accent"
+                        [ngStyle]="{margin: '100px auto'}"></mat-progress-spinner>
+</ng-template>
+
+
+<ng-template #newGame>
+  <p>Prepare for a battle.</p>
 </ng-template>
 
