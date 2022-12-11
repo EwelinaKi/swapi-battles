@@ -2,8 +2,12 @@
   <ng-container *ngIf="!(gameService.isGameEnded$ | async); else newGameTmpl">
     <ng-container *ngIf="battleService.battle$ | async; else loader">
       <ng-container *ngIf="summary$ | async; else revealTmpl">
-        <button mat-raised-button color="secondary" (click)="nextRound()">
-          {{gameService.round < gameService.gameLength - 1 ? "Next round" : "Eng Game"}}
+        <button
+          mat-raised-button
+          color="secondary"
+          data-testid="controlBtn"
+          (click)="nextRound()">
+          {{gameService.round < gameService.gameLength - 1 ? "Next round" : "End Game"}}
         </button>
       </ng-container>
     </ng-container>
@@ -11,18 +15,22 @@
 </div>
 
 <ng-template #revealTmpl>
-  <button mat-raised-button color="secondary"
-          disabled="{{waitForVotes$ | async}}"
-          (click)="reveal()"> {{gameService.round < gameService.gameLength - 1 ? "Reveal" : "Last reveal"}}
+  <button
+    mat-raised-button color="secondary"
+    data-testid="controlBtn"
+    disabled="{{waitForVotes$ | async}}"
+    (click)="reveal()"> {{gameService.round < gameService.gameLength - 1 ? "Reveal" : "Last reveal"}}
   </button>
 </ng-template>
 
 <ng-template #newGameTmpl>
-  <button mat-raised-button color="secondary"
-          (click)="reset()">Start new Game
+  <button
+    mat-raised-button color="secondary"
+    data-testid="controlBtn"
+    (click)="reset()">Start new Game
   </button>
 </ng-template>
 
-<ng-template #loader class="loader">
+<ng-template #loader class="loader" data-testid="loader">
   <p>WAITING FOR NEW BATTLE....</p>
 </ng-template>

@@ -1,6 +1,9 @@
-<div class="round">
+<div class="round" data-testid="round">
+  <!--  <ng-container >-->
   <ng-container *ngIf="!(gameService.isGameEnded$ | async)">
-    <p>round -{{ ((gameService.round$ | async) || 0) + 1 }}-</p>
-    <p class="round-type">{{battleService.battleType$ | async | uppercase}}</p>
+    <p data-testid="roundNumber">round -{{ ((gameService.round$ | async) || 0) + 1 }}-</p>
+    <p class="round-type"
+       data-testid="battleType"
+    >{{battleService.battleType$ | async | uppercase}}</p>
   </ng-container>
 </div>

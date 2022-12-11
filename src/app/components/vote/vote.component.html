@@ -1,4 +1,4 @@
-<div class="votes-container">
+<div class="votes-container" data-testid="votesContainer">
   <ng-container *ngIf="!(gameService.isGameEnded$ | async); else empty">
 
     <div class="votes" *ngIf="battleService.battle$ | async as battle">
@@ -8,11 +8,13 @@
           <mat-button-toggle
             (click)="gameService.vote(0,0)"
             disabled="{{gameService.roundFreeze$ | async}}"
+            data-testid="vote1a"
             value="{{0}}">Vote A
           </mat-button-toggle>
           <mat-button-toggle
             (click)="gameService.vote(0,1)"
             disabled="{{gameService.roundFreeze$ | async}}"
+            data-testid="vote1b"
             value="{{1}}">Vote B
           </mat-button-toggle>
         </mat-button-toggle-group>
@@ -24,11 +26,13 @@
           <mat-button-toggle
             (click)="gameService.vote(1,0)"
             disabled="{{gameService.roundFreeze$ | async}}"
+            data-testid="vote2a"
             value="{{0}}">Vote A
           </mat-button-toggle>
           <mat-button-toggle
             (click)="gameService.vote(1,1)"
             disabled="{{gameService.roundFreeze$ | async}}"
+            data-testid="vote2b"
             value="{{1}}">Vote B
           </mat-button-toggle>
         </mat-button-toggle-group>
@@ -38,5 +42,5 @@
 </div>
 
 <ng-template #empty>
-  <div [ngStyle]="{height: '80px'}"></div>
+  <div [ngStyle]="{height: '80px'}" data-testid="empty"></div>
 </ng-template>
