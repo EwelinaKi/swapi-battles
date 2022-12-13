@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GameService } from '../../services/gameService/game.service';
+import { EAnswer, GameService } from '../../services/gameService/game.service';
 import { BattleService } from '../../services/battleService/battle.service';
 
 
@@ -9,6 +9,8 @@ import { BattleService } from '../../services/battleService/battle.service';
   styleUrls: [ './vote.style.scss' ],
 })
 export class VoteComponent {
+
+  answer = EAnswer;
 
   constructor(
     public gameService: GameService,

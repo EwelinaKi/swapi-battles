@@ -21,7 +21,7 @@
             <p class="battle-question"
                *ngIf="battleService.questionAttribute as attr">
               {{attr}}
-              = {{(gameService.correctAnswer$ | async) !== null ? (battle[attr] === 0 ? 'unknown' : battle[attr]) : '?' }}</p>
+              = {{(gameService.correctAnswer$ | async) !== notGiven ? (battle[attr] === 0 ? 'unknown' : battle[attr]) : '?' }}</p>
           </div>
         </ng-template>
       </div>

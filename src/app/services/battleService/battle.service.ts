@@ -80,11 +80,11 @@ export class BattleService {
 
     this.apiService.getNewBattle(this.battleType)
       .subscribe(
-        resp => {
-          this._battle.next(resp)
+        response => {
+          this._battle.next(response)
         },
         (err) => {
-          if (err.status = 404) {
+          if (err.status === 404) {
             this.reloadBattle();
           } else {
             console.log(err);

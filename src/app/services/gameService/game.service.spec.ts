@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { GameService } from './game.service';
+import { EAnswer, GameService } from './game.service';
 import { BattleService } from '../battleService/battle.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { EBattle, IBattle } from '../models/battle.model';
@@ -54,46 +54,33 @@ describe('GameService', () => {
     expect(service.round).toEqual(0);
     expect(service.playerOneVote).toBeUndefined();
     expect(service.playerTwoVote).toBeUndefined();
-    expect(service.scorePLayerOne).toEqual(0);
-    expect(service.scorePLayerTwo).toEqual(0);
+    expect(service.playerOneScore).toEqual(0);
+    expect(service.playerTwoScore).toEqual(0);
     service.isGameEnded$.subscribe(isGameEnded =>
       expect(isGameEnded).toBeTruthy()).unsubscribe();
-  });
-
-  it('should add points to players', () => {
-    expect(service.scorePLayerOne).toEqual(0);
-    expect(service.scorePLayerTwo).toEqual(0);
-
-    service.addPointFor(0);
-    expect(service.scorePLayerOne).toEqual(1);
-    expect(service.scorePLayerTwo).toEqual(0);
-
-    service.addPointFor(1);
-    expect(service.scorePLayerOne).toEqual(1);
-    expect(service.scorePLayerTwo).toEqual(1);
   });
 
   it('should change players votes', () => {
     expect(service.playerOneVote).toBeUndefined();
     expect(service.playerTwoVote).toBeUndefined();
 
-    service.vote(0, 1);
-    service.vote(1, 0);
+    service.vote(0, EAnswer.SECOND_TILE);
+    service.vote(1, EAnswer.FIRST_TILE);
 
-    expect(service.playerOneVote).toEqual(1);
-    expect(service.playerTwoVote).toEqual(0);
+    expect(service.playerOneVote).toEqual(EAnswer.SECOND_TILE);
+    expect(service.playerTwoVote).toEqual(EAnswer.FIRST_TILE);
   });
 
   it('should change round', () => {
-    service.vote(0, 0);
-    service.vote(1, 0);
+    service.vote(0, EAnswer.FIRST_TILE);
+    service.vote(1, EAnswer.FIRST_TILE);
 
     service.nextRound();
 
     expect(service.round).toEqual(1);
-    expect(service.playerOneVote).toBeUndefined();
-    expect(service.playerTwoVote).toBeUndefined();
-    expect(service.correctAnswer).toBeNull();
+    expect(service.playerOneVote).toEqual(EAnswer.FIRST_TILE);
+    expect(service.playerTwoVote).toEqual(EAnswer.FIRST_TILE);
+    expect(service.correctAnswer).toEqual(EAnswer.NOT_GIVEN);
     expect(battleServiceSpy.reloadBattle).toHaveBeenCalled();
     service.isGameEnded$.subscribe(isGameEnded =>
       expect(isGameEnded).toBeFalsy()).unsubscribe();
@@ -101,46 +88,46 @@ describe('GameService', () => {
       expect(isGameEnded).toBeFalsy()).unsubscribe();
   });
 
-  it('should reveal with 1 correct answers', () => {
-    service.vote(0, 0);
-    service.vote(1, 1);
+  it('should reveal with 1 correct answers ans add point', () => {
+    service.vote(0, EAnswer.FIRST_TILE);
+    service.vote(1, EAnswer.SECOND_TILE);
 
     (battleServiceMock as any).questionAttribute = 'mass';
 
     service.reveal();
     service.roundFreeze$.subscribe(isGameEnded =>
       expect(isGameEnded).toBeTruthy()).unsubscribe();
-    expect(service.correctAnswer).toEqual(1);
-    expect(service.scorePLayerOne).toEqual(0);
-    expect(service.scorePLayerTwo).toEqual(1);
+    expect(service.correctAnswer).toEqual(EAnswer.SECOND_TILE);
+    expect(service.playerOneScore).toEqual(0);
+    expect(service.playerTwoScore).toEqual(1);
   });
 
-  it('should reveal with two correct answers', () => {
-    service.vote(0, 1);
-    service.vote(1, 1);
+  it('should reveal with two correct answers and add points', () => {
+    service.vote(0, EAnswer.SECOND_TILE);
+    service.vote(1, EAnswer.SECOND_TILE);
 
     (battleServiceMock as any).questionAttribute = 'mass';
 
     service.reveal();
     service.roundFreeze$.subscribe(isGameEnded =>
       expect(isGameEnded).toBeTruthy()).unsubscribe();
-    expect(service.correctAnswer).toEqual(1);
-    expect(service.scorePLayerOne).toEqual(1);
-    expect(service.scorePLayerTwo).toEqual(1);
+    expect(service.correctAnswer).toEqual(EAnswer.SECOND_TILE);
+    expect(service.playerOneScore).toEqual(1);
+    expect(service.playerTwoScore).toEqual(1);
   });
 
-  it('should reveal with both incorrect answers', () => {
-    service.vote(0, 0);
-    service.vote(1, 0);
+  it('should reveal with both incorrect answers and dont add points', () => {
+    service.vote(0, EAnswer.FIRST_TILE);
+    service.vote(1, EAnswer.FIRST_TILE);
 
     (battleServiceMock as any).questionAttribute = 'mass';
 
     service.reveal();
     service.roundFreeze$.subscribe(isGameEnded =>
       expect(isGameEnded).toBeTruthy()).unsubscribe();
-    expect(service.correctAnswer).toEqual(1);
-    expect(service.scorePLayerOne).toEqual(0);
-    expect(service.scorePLayerTwo).toEqual(0);
+    expect(service.correctAnswer).toEqual(EAnswer.SECOND_TILE);
+    expect(service.playerOneScore).toEqual(0);
+    expect(service.playerTwoScore).toEqual(0);
   });
 
 });

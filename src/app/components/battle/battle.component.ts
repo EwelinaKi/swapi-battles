@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BattleService } from '../../services/battleService/battle.service';
 import { IBattleAttributes } from '../../services/models/battle.model';
-import { GameService } from '../../services/gameService/game.service';
+import { EAnswer, GameService } from '../../services/gameService/game.service';
 
 
 @Component({
@@ -10,6 +10,8 @@ import { GameService } from '../../services/gameService/game.service';
   styleUrls: [ './battle.style.scss' ],
 })
 export class BattleComponent implements OnInit {
+
+  notGiven = EAnswer.NOT_GIVEN;
 
   readonly labels: { [key: string]: string } = {
     gender: 'Gender',

@@ -7,7 +7,7 @@
           color="secondary"
           data-testid="controlBtn"
           (click)="nextRound()">
-          {{gameService.round < gameService.gameLength - 1 ? "Next round" : "End Game"}}
+          {{gameService.round === gameService.gameLength - 1 ? "End Game" : "Next round"}}
         </button>
       </ng-container>
     </ng-container>
@@ -19,7 +19,7 @@
     mat-raised-button color="secondary"
     data-testid="controlBtn"
     disabled="{{waitForVotes$ | async}}"
-    (click)="reveal()"> {{gameService.round < gameService.gameLength - 1 ? "Reveal" : "Last reveal"}}
+    (click)="reveal()"> {{gameService.round === gameService.gameLength - 1 ? "Last reveal" : "Reveal" }}
   </button>
 </ng-template>
 

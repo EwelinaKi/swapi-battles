@@ -6,13 +6,13 @@
         <p>Player1</p>
         <mat-button-toggle-group name="playerOneVote" class="vote-one" aria-label="First player vote">
           <mat-button-toggle
-            (click)="gameService.vote(0,0)"
+            (click)="gameService.vote(0, answer.FIRST_TILE)"
             disabled="{{gameService.roundFreeze$ | async}}"
             data-testid="vote1a"
             value="{{0}}">Vote A
           </mat-button-toggle>
           <mat-button-toggle
-            (click)="gameService.vote(0,1)"
+            (click)="gameService.vote(0, answer.SECOND_TILE)"
             disabled="{{gameService.roundFreeze$ | async}}"
             data-testid="vote1b"
             value="{{1}}">Vote B
@@ -24,13 +24,13 @@
         <p>Player2</p>
         <mat-button-toggle-group name="playerTwoVote" class="vote-two" aria-label="Second player vote">
           <mat-button-toggle
-            (click)="gameService.vote(1,0)"
+            (click)="gameService.vote(1, answer.FIRST_TILE)"
             disabled="{{gameService.roundFreeze$ | async}}"
             data-testid="vote2a"
             value="{{0}}">Vote A
           </mat-button-toggle>
           <mat-button-toggle
-            (click)="gameService.vote(1,1)"
+            (click)="gameService.vote(1,answer.SECOND_TILE)"
             disabled="{{gameService.roundFreeze$ | async}}"
             data-testid="vote2b"
             value="{{1}}">Vote B

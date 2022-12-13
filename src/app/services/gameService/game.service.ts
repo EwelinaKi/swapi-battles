@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { BattleService } from '../battleService/battle.service';
+import { IBattle } from '../models/battle.model';
 
 
-type AnswerType = 0 | 1 | null | 'tie';
-
+export enum EAnswer {
+  TIE,
+  FIRST_TILE,
+  SECOND_TILE,
+  NOT_GIVEN
+}
 
 @Injectable({
   providedIn: 'root'
@@ -12,29 +17,30 @@ type AnswerType = 0 | 1 | null | 'tie';
 
 export class GameService {
 
-  private _resetScore = [ 0, 0 ];
-  private _resetRound = 0;
+  private readonly FIRST_TILE = 0;
+  private readonly SECOND_TILE = 1;
+
+  private _initialScore = [ 0, 0 ];
+  private _initialRound = 0;
   private _gameLength = 3;
-  private _resetVotes = [];
+  private _initialVotes = [];
 
-
-  private readonly _score = new BehaviorSubject<number[]>(this._resetScore);
-  private readonly _round = new BehaviorSubject(this._resetRound);
-  private readonly _playerVotes = new BehaviorSubject<number[]>(this._resetVotes);
+  private readonly _score = new BehaviorSubject<number[]>(this._initialScore);
+  private readonly _round = new BehaviorSubject(this._initialRound);
+  private readonly _playerVotes = new BehaviorSubject<number[]>(this._initialVotes);
   private readonly _isGameEnded = new BehaviorSubject<boolean>(true);
-  private readonly _correctAnswer = new BehaviorSubject<AnswerType>(null);
+  private readonly _correctAnswer = new BehaviorSubject<EAnswer>(EAnswer.NOT_GIVEN);
   private readonly _roundFreeze = new BehaviorSubject<boolean>(false);
 
   readonly playerVote$ = this._playerVotes.asObservable();
   readonly correctAnswer$ = this._correctAnswer.asObservable();
   readonly roundFreeze$ = this._roundFreeze.asObservable();
 
-
-  readonly scorePlayerOne$ = this._score.asObservable()
+  readonly playerOneScore$ = this._score.asObservable()
     .pipe(
       map(score => score[0])
     );
-  readonly scorePlayerTwo$ = this._score.asObservable()
+  readonly playerTwoScore$ = this._score.asObservable()
     .pipe(
       map(score => score[1])
     );
@@ -42,11 +48,11 @@ export class GameService {
   readonly round$ = this._round.asObservable();
   readonly isGameEnded$ = this._isGameEnded.asObservable();
 
-  get scorePLayerOne(): number {
+  get playerOneScore(): number {
     return this._score.getValue()[0];
   }
 
-  get scorePLayerTwo(): number {
+  get playerTwoScore(): number {
     return this._score.getValue()[1];
   }
 
@@ -62,7 +68,7 @@ export class GameService {
     return this._round.getValue();
   }
 
-  get correctAnswer(): AnswerType {
+  get correctAnswer(): EAnswer {
     return this._correctAnswer.getValue();
   }
 
@@ -74,69 +80,91 @@ export class GameService {
   }
 
   vote(playerIndex: number, votedAttr: number): void {
-    const newVotes = [
-      playerIndex === 0 ? votedAttr : this.playerOneVote,
-      playerIndex === 1 ? votedAttr : this.playerTwoVote
-    ];
+    const newVotes = this._playerVotes.getValue();
+    newVotes[playerIndex] = votedAttr;
     this._playerVotes.next(newVotes);
   }
 
   reveal(): void {
     this._roundFreeze.next(true);
-    if (!this.battleService.battle) {
+
+    const battle = this.battleService.battle;
+    if (!battle) {
       return;
     }
 
-    const questionAttribute = this.battleService.questionAttribute;
-    const attribute1 = this.battleService.battle[0][questionAttribute];
-    const attribute2 = this.battleService.battle[1][questionAttribute];
-
-    if (attribute1 === undefined || attribute2 === undefined) {
-      this._correctAnswer.next(null);
+    if (this.notAllAttributesDefined(battle)) {
+      this._correctAnswer.next(EAnswer.NOT_GIVEN);
       return;
-    } else if (attribute1 === attribute2) {
-      this._correctAnswer.next('tie');
-      this.playerOneVote === attribute1 && this.addPointFor(0);
-      this.playerTwoVote === attribute1 && this.addPointFor(1);
+    } else if (this.attributesAreEqual(battle)) {
+      this._correctAnswer.next(EAnswer.TIE);
+      this.addPointForAll();
     } else {
-      const result = attribute1 > attribute2 ? 0 : 1;
+      const result = this.winningAttribute(battle);
       this._correctAnswer.next(result);
-      this.playerOneVote === result && this.addPointFor(0);
-      this.playerTwoVote === result && this.addPointFor(1);
+      this._playerVotes.getValue().forEach((playerVote, playerIndex) => {
+        EAnswer[playerVote] === EAnswer[result] && this.addPointFor(playerIndex)
+      })
     }
   }
 
   nextRound(): void {
     this._round.next(this.round + 1);
-    this._playerVotes.next(this._resetVotes);
+    this._playerVotes.next(this._initialVotes);
     this.battleService.reloadBattle();
     this._isGameEnded.next(this.round === this.gameLength);
-    this._correctAnswer.next(null);
+    this._correctAnswer.next(EAnswer.NOT_GIVEN);
     this._roundFreeze.next(false);
 
     if (this._isGameEnded.getValue()) {
-      this._score.next(this._resetScore);
+      this._score.next(this._initialScore);
     }
   }
 
-  addPointFor(player: number): void {
-    const newScore = [
-      player === 0 ? this.scorePLayerOne + 1 : this.scorePLayerOne,
-      player === 1 ? this.scorePLayerTwo + 1 : this.scorePLayerTwo
-    ];
-
-    this._score.next(newScore);
-  }
-
   resetGame(): void {
-    this._score.next(this._resetScore);
-    this._round.next(this._resetRound);
+    this._score.next(this._initialScore);
+    this._round.next(this._initialRound);
     this._isGameEnded.next(false);
     this.resetPlayersVotes();
   }
 
+  private addPointFor(player: number): void {
+    const newScore = this._score.getValue();
+    newScore[player] += 1;
+
+    this._score.next(newScore);
+  }
+
+  private addPointForAll(): void {
+    const newScore = this._score.getValue().map(score => score + 1)
+    this._score.next(newScore);
+  }
+
   private resetPlayersVotes(): void {
     this._playerVotes.next([]);
+  }
+
+  private notAllAttributesDefined(battle: IBattle[]): boolean {
+    const questionAttribute = this.battleService.questionAttribute;
+
+    return battle[this.FIRST_TILE][questionAttribute] === null ||
+      battle[this.SECOND_TILE][questionAttribute] === null
+  }
+
+  private attributesAreEqual(battle: IBattle[]): boolean {
+    const questionAttribute = this.battleService.questionAttribute;
+
+    return battle[this.FIRST_TILE][questionAttribute] ===
+      battle[this.SECOND_TILE][questionAttribute];
+  }
+
+  private winningAttribute(battle: IBattle[]): EAnswer {
+    const questionAttribute = this.battleService.questionAttribute;
+
+    // TS2532: Object is possibly 'undefined' <-- Condition checked before function was invoked
+    // @ts-ignore
+    return battle[this.FIRST_TILE][questionAttribute] > battle[this.SECOND_TILE][questionAttribute]
+      ? EAnswer.FIRST_TILE : EAnswer.SECOND_TILE;
   }
 
 }

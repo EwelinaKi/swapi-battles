@@ -7,37 +7,30 @@ import { BattleType, EBattle, IBattleAttributes } from "../models/battle.model";
 })
 export class RandomService {
 
-  getRandomNumberFromRange(range: number[]): number {
-    const [ min, max ] = range;
-    return Math.floor(Math.random() * (max - min) + min);
-  }
-
   getRandomBattleType(): BattleType {
-    const random = this.getRandomNumberFromRange([ 1, 3 ]);
+    const randomIndex = this.getRandomNumberFrom([ 0, Object.keys(EBattle).length - 1 ]);
 
-    switch (random) {
-      case 1:
-        return EBattle.PLANETS;
-      case 2:
-        return EBattle.STARSHIPS;
-      default:
-        return EBattle.PEOPLE;
-    }
+    return Object.values(EBattle)[randomIndex];
   }
 
   getRandomPair(range: number[]): number[] {
-    const random1 = this.getRandomNumberFromRange(range);
-    let random2 = this.getRandomNumberFromRange(range);
+    const random1 = this.getRandomNumberFrom(range);
+    let random2 = this.getRandomNumberFrom(range);
 
     if (random1 === random2) {
-      this.getRandomPair(range);
+      return this.getRandomPair(range);
     }
 
     return [ random1, random2 ];
   }
 
   getRandomAttribute(attributes: IBattleAttributes[]): IBattleAttributes {
-    const index = this.getRandomNumberFromRange([ 0, attributes.length - 1 ]);
+    const index = this.getRandomNumberFrom([ 0, attributes.length - 1 ]);
     return attributes[index];
+  }
+
+  private getRandomNumberFrom(range: number[]): number {
+    const [ min, max ] = range;
+    return Math.floor(Math.random() * (max - min) + min);
   }
 }

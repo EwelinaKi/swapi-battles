@@ -14,7 +14,6 @@ export class RevealComponent {
   waitForVotes$ = new BehaviorSubject(false);
   summary$ = new BehaviorSubject(false);
 
-
   constructor(
     public gameService: GameService,
     public battleService: BattleService
@@ -23,7 +22,7 @@ export class RevealComponent {
 
   ngOnInit() {
     this.gameService.playerVote$.subscribe(votes => {
-      this.waitForVotes$.next(votes.filter(vote => vote !== undefined).length !== 2)
+      this.waitForVotes$.next(this.bothUsersVoted(votes))
     });
   }
 
@@ -41,6 +40,10 @@ export class RevealComponent {
   reset(): void {
     this.gameService.resetGame();
     this.summary$.next(false);
+  }
+
+  private bothUsersVoted(votes: number[]): boolean {
+    return votes.filter(vote => vote !== undefined).length !== 2
   }
 
 }
